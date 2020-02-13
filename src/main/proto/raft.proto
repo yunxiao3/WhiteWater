@@ -1,0 +1,66 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "io.jiache.grpc";
+option java_outer_classname = "RaftProto";
+
+package raft;
+
+// leader service
+service RaftService {
+    rpc CallBack (CallBackRequest) returns (CallBackResponce) {}
+    rpc Put (PutRequest) returns (PutResponce) {}
+    rpc Get (GetRequest) returns (GetResponce) {}
+    rpc AppendEntries (AppendEntriesRequest) returns (AppendEntriesResponce) {}
+}
+
+message PutRequest{
+    string key = 1;
+    string valueJson = 2;
+}
+
+message PutResponce{
+    bool sucess = 1;
+}
+
+message GetRequest{
+    string key = 1;
+}
+
+message GetResponce{
+    string value = 1;
+}
+
+message CallBackRequest{
+    int32 replicLogIndex = 1;
+}
+
+message CallBackResponce{
+    bool success = 1;
+}
+
+
+message AppendEntriesRequest{
+    string entryJson = 1;
+    int32 committedIndex = 2;
+}
+
+message AppendEntriesResponce{
+    bool success = 1;
+}
+
+// secretary service
+service SecretaryService {
+    rpc AddEntries (AddEntriesRequest) returns (AddEntriesResponce) {}
+}
+
+message AddEntriesRequest{
+    string entryJson = 1;
+    int32 committedIndex = 2;
+}
+
+message AddEntriesResponce {
+    bool success = 1;
+}
+
+
